@@ -1,0 +1,124 @@
+<!-- الصفحة الرئيسية لتطبيق توليد معرّفات UUID الفريدة. -->
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1118">
+  <meta name="description" content="A fast local UUID generator for developers.">
+  <title>UUID Generator</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="app-shell" id="appShell">
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+
+    <header class="toolbar">
+      <div class="toolbar-inner">
+        <a class="brand" href="#top" aria-label="UUID Generator home">
+          <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span class="brand-name">UUID Generator</span>
+        </a>
+        <div class="toolbar-actions">
+          <span class="toolbar-status"><span class="status-dot"></span> Running locally</span>
+          <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light theme">
+            <svg class="icon icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+            <svg class="icon icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.4 15.1A8.5 8.5 0 0 1 8.9 3.6 8.5 8.5 0 1 0 20.4 15.1Z"></path></svg>
+            <span id="themeLabel">Light</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="top" class="main-container">
+      <section class="intro-block">
+        <h1>Universally Unique Identifier</h1>
+      </section>
+
+      <section class="workspace-grid" aria-label="UUID generator">
+        <div class="generator-panel">
+          <div class="panel-topline">
+            <div class="panel-label"><span>Current output</span></div>
+            <div class="live-badge"><svg class="tiny-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 7 3v5c0 4.5-3 8.1-7 10-4-1.9-7-5.5-7-10V6l7-3Z"></path><path d="m9 12 2 2 4-4"></path></svg> <span id="versionBadge">v4 / Random</span></div>
+          </div>
+
+          <div class="result-stage" id="resultStage" role="status" aria-live="polite">
+            <div class="result-stack" id="resultStack"></div>
+          </div>
+
+          <button class="primary-action" id="generateButton" type="button">
+            <span class="action-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8.1 8.1 0 0 0-14.9-4L3 10"></path><path d="M3 5v5h5"></path><path d="M4 13a8.1 8.1 0 0 0 14.9 4L21 14"></path><path d="M21 19v-5h-5"></path></svg></span>
+            <span>Generate new UUID</span>
+            <span class="action-shortcut">Cmd + Enter</span>
+          </button>
+          <button class="secondary-action hidden" id="copyAllButton" type="button"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Copy all</button>
+        </div>
+
+        <aside class="controls-column">
+          <div class="control-panel">
+            <div class="panel-topline">
+              <div class="panel-label"><span>Generation options</span></div>
+              <svg class="muted-icon icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 4 5 5M13 6 4 15l-1 5 5-1 9-9M8 4v4M6 6h4M18 14v4M16 16h4"></path></svg>
+            </div>
+
+            <div class="control-section">
+              <div class="control-heading"><span class="control-label">Version</span><span class="control-code">MODE / 01</span></div>
+              <button class="version-trigger" id="versionTrigger" type="button">
+                <span id="versionTriggerLabel">UUID v4 - Random</span>
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+              </button>
+            </div>
+
+            <div class="control-section">
+              <div class="control-heading"><span class="control-label">Quantity</span><span class="control-code">COUNT / 02</span></div>
+              <input class="quantity-input" id="quantityInput" type="number" min="1" max="100" value="1" aria-label="Quantity">
+            </div>
+
+            <div class="control-section toggle-section">
+              <div><div class="control-heading"><span class="control-label">Uppercase</span><span class="control-code">FORMAT / 03</span></div><small>ABCDEF instead of abcdef</small></div>
+              <button class="switch" id="uppercaseToggle" type="button" role="switch" aria-checked="false" aria-label="Enable uppercase"><span></span></button>
+            </div>
+          </div>
+        </aside>
+      </section>
+    </main>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <dialog class="version-dialog" id="versionDialog">
+      <div class="dialog-panel">
+        <div class="dialog-header">
+          <span class="dialog-title">Select UUID Version</span>
+          <button class="dialog-close" id="dialogClose" type="button" aria-label="Close">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+          </button>
+        </div>
+        <div class="dialog-body">
+          <button class="version-option selected" data-version="4" type="button">
+            <span class="version-tag">v4</span>
+            <div class="version-info">
+              <strong>Random</strong>
+              <small>Cryptographically secure random UUID</small>
+            </div>
+          </button>
+          <button class="version-option" data-version="7" type="button">
+            <span class="version-tag">v7</span>
+            <div class="version-info">
+              <strong>Time-ordered</strong>
+              <small>Sort-friendly with embedded timestamp</small>
+            </div>
+          </button>
+          <button class="version-option" data-version="1" type="button">
+            <span class="version-tag">v1</span>
+            <div class="version-info">
+              <strong>Timestamp</strong>
+              <small>Based on current time and node ID</small>
+            </div>
+          </button>
+        </div>
+      </div>
+    </dialog>
+  </div>
+  <script src="/js/main.js"></script>
+</body>
+</html>

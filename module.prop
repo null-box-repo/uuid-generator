@@ -1,0 +1,10 @@
+id=uuid-generator
+name=UUID Generator
+icon=icon.jpg
+description=A simple tool to generate UUIDs.
+author=YasserNull
+version=v1.0.0
+versionCode=1
+repository=https://github.com/null-box-repo/uuid-generator
+install=setup.sh
+permission=default
